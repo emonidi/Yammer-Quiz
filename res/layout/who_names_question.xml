@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        android:layout_weight="1"
         android:background="#333">
 
         <TextView
@@ -35,14 +36,18 @@
         android:layout_height="200dip"
         android:src="@drawable/ic_launcher"
         android:minHeight="250dp"
+        android:layout_weight="5"
         android:id="@+id/mainImageView"
         android:layout_gravity="center"
         android:layout_marginTop="20dp" />
 
     <ListView
+        android:id="@+id/mainListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/mainListView"
-        android:layout_gravity="center_horizontal|bottom" />
+        android:layout_gravity="bottom"
+        android:layout_weight="2"
+        android:divider="#ebebeb"
+        android:dividerHeight="1dp" />
 
 </LinearLayout>

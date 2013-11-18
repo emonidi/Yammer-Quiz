@@ -209,15 +209,15 @@ public class WhoQuestion extends Activity {
 
     }
 
-    public class ImageGetter extends AsyncTask<String, Void, Drawable> {
+    public class ImageGetter extends AsyncTask<String, Void, Bitmap> {
         String index;
         @Override
-        protected Drawable doInBackground(String... strings) {
+        protected Bitmap doInBackground(String... strings) {
             index = strings[1];
             try {
                 URL imgUrl  = new URL(strings[0]);
                 InputStream is = (InputStream) imgUrl.getContent();
-                Drawable d = Drawable.createFromStream(is,"personImage_"+strings[1]);
+                Bitmap d = BitmapFactory.decodeStream(is);
                 return d;
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -228,15 +228,18 @@ public class WhoQuestion extends Activity {
         }
 
         @Override
-        protected void onPostExecute(Drawable drawable) {
-            super.onPostExecute(drawable);
-            BitmapDrawable bDrawable = (BitmapDrawable) drawable;
-            Bitmap circleBitmap = Bitmap.createBitmap(bDrawable.getBitmap().getWidth(),bDrawable.getBitmap().getHeight(), Bitmap.Config.ARGB_8888);
-            BitmapShader shader = new BitmapShader(bDrawable.getBitmap(), Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        protected void onPostExecute(Bitmap bitmap) {
+        
+            Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+            BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            
             Paint paint = new Paint();
             paint.setShader(shader);
+            
+            paint.setStrokeWidth(10);
+          
             Canvas c = new Canvas(circleBitmap);
-            c.drawCircle(bDrawable.getBitmap().getWidth()/2,bDrawable.getBitmap().getHeight()/2,bDrawable.getBitmap().getWidth()/2,paint);
+            c.drawCircle(bitmap.getWidth()/2,bitmap.getHeight()/2,bitmap.getWidth()/2,paint);
 
             View view = (View) listView.getChildAt(Integer.parseInt(index));
             ImageView imageView = (ImageView) view.findViewById(R.id.imageView);

@@ -22,14 +22,15 @@ public final class R {
     }
     public static final class drawable {
         public static final int background=0x7f020000;
-        public static final int correct=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int incorrect=0x7f020003;
-        public static final int input=0x7f020004;
-        public static final int rounded_edges_bottom_form=0x7f020005;
-        public static final int rounded_edges_top_form=0x7f020006;
-        public static final int signin=0x7f020007;
-        public static final int yammer_sigin_in=0x7f020008;
+        public static final int circle_border=0x7f020001;
+        public static final int correct=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int incorrect=0x7f020004;
+        public static final int input=0x7f020005;
+        public static final int rounded_edges_bottom_form=0x7f020006;
+        public static final int rounded_edges_top_form=0x7f020007;
+        public static final int signin=0x7f020008;
+        public static final int yammer_sigin_in=0x7f020009;
     }
     public static final class id {
         public static final int action_settings=0x7f080010;
