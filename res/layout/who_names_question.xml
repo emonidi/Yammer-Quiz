@@ -48,6 +48,6 @@
         android:layout_gravity="bottom"
         android:layout_weight="2"
         android:divider="#ebebeb"
-        android:dividerHeight="1dp" />
+        android:dividerHeight="0dp" />
 
 </LinearLayout>

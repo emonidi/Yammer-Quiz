@@ -24,6 +24,7 @@
             android:height="60dp"
             android:textSize="22dp"
             android:textColor="#fff"
+            android:layout_weight="1"
             android:paddingLeft="20dp"
             android:gravity="center_vertical" />
 
