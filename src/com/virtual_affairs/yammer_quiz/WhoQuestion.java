@@ -87,7 +87,7 @@ public class WhoQuestion extends Activity {
             Person person = new Person();
             try {
                 person.setFull_name(selectedPeople.getJSONObject(i).getString("full_name"));
-                person.setImageUrl(selectedPeople.getJSONObject(i).getString("mugshot_url_template").replace("{width}","200").replace("{height}","200"));
+                person.setImageUrl(selectedPeople.getJSONObject(i).getString("mugshot_url_template").replace("{width}","300").replace("{height}","300"));
                 persons.add(person);
             } catch (JSONException e) {
                 e.printStackTrace();

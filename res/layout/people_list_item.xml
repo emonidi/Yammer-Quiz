@@ -3,7 +3,7 @@
 <RelativeLayout
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="100dp"
+    android:layout_height="match_parent"
     android:id="@+id/listItemMainLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="10dp"
@@ -20,10 +20,10 @@
         android:id="@+id/imageView"
         android:layout_weight="1"
         android:src="@drawable/ic_launcher"
-        android:minHeight="80dp"
+        android:minHeight="120dp"
         android:clickable="false"
         android:scaleType="fitCenter"
-        android:minWidth="80dp"
+        android:minWidth="120dp"
         android:layout_gravity="center" />
 
 </RelativeLayout>

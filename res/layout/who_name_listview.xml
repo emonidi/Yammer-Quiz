@@ -12,13 +12,14 @@
         android:layout_alignParentLeft="true">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:id="@+id/imageView"
 
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:src="@android:drawable/star_off" />
+            android:src="@android:drawable/star_off"
+            android:layout_gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,7 +31,8 @@
             android:layout_alignBottom="@+id/imageView"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
-            android:layout_marginLeft="20dip" />
+            android:layout_marginLeft="20dip"
+            android:textColor="#fff" />
 
     </LinearLayout>
 

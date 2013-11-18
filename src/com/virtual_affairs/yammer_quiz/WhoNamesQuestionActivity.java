@@ -60,7 +60,7 @@ public class WhoNamesQuestionActivity extends Activity {
                 selectedPeople.put(helper.getPersonWithImage(people));
             }
             IGetter iGetter = new IGetter();
-            iGetter.execute(selectedPeople.getJSONObject(answer).getString("mugshot_url_template").replace("{width}","200").replace("{height}","200"));
+            iGetter.execute(selectedPeople.getJSONObject(answer).getString("mugshot_url_template").replace("{width}","300").replace("{height}","300"));
 
             listView = (ListView) findViewById(R.id.mainListView);
 
