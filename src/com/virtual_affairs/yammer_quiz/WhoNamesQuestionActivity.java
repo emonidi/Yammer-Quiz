@@ -123,6 +123,7 @@ public class WhoNamesQuestionActivity extends Activity {
                             public void run() {
                                 Intent i = new Intent(getBaseContext(),WhoQuestion.class);
                                 startActivity(i);
+                                finish();
                             }
                         };
 
