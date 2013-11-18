@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="#ed5565"
     android:orientation="vertical"
@@ -12,6 +12,9 @@
     <ProgressBar
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_gravity="center"
-    />
-</LinearLayout>
+        android:layout_gravity="center_horizontal|clip_vertical"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:indeterminate="false"
+        android:id="@+id/splashProgressBar" />
+</RelativeLayout>
