@@ -24,9 +24,10 @@ public class InfoManager {
 		this.FILENAME = filename;
 	}
 
-	
-	
-	public String Read(){
+
+
+
+    public String Read(){
 		try {
 			token = "";
 			fis = ctx.openFileInput(FILENAME);

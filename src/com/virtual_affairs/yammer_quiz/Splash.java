@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Date;
+
 public class Splash extends Activity {
 	TextView splashStatusText;
 	Float originalSignInButtonY;
@@ -27,12 +29,15 @@ public class Splash extends Activity {
 	LinearLayout signInLayout;
 	ImageView signInButton;
 	String token;
+    InfoManager infoManager;
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
-		
+		long time =  new Date().getTime();
+        String updated = new InfoManager(this,"updated").Read();
+
 		signInLayout = (LinearLayout) findViewById(R.id.signInButtonLayout);
 		
 		signInButton = (ImageView) findViewById(R.id.signInButton);
@@ -58,9 +63,20 @@ public class Splash extends Activity {
 		if(token == null){
 			showSignInButton();
 		}else{
-			getPeople();
+			if(updated == null){
+                getPeople();
+            }else {
+                if(Long.parseLong(updated)>new Date().getTime()+86400000){
+                    getPeople();
+                }else{
+                	Helper helper = new Helper();
+                    Intent  in = new Intent(getBaseContext(),helper.startNextQuestion(getBaseContext(),"splash"));
+                    startActivity(in);
+                    finish();
+                }
+            }
 		}
-				
+
 		
 	}
 	
@@ -69,7 +85,7 @@ public class Splash extends Activity {
 		splashStatusText.setText("Getting people...");
 		LinearLayout splashStatusLayout= (LinearLayout) findViewById(R.id.splashStatusLayout);
 		splashStatusLayout.setVisibility(View.VISIBLE);
-		PeopleGetter peopleGetter = new PeopleGetter(getBaseContext());
+		PeopleGetter peopleGetter = new PeopleGetter(this);
 		peopleGetter.execute(new String[] {token});
 	}
 

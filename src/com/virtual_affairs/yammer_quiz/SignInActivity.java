@@ -1,5 +1,6 @@
 package com.virtual_affairs.yammer_quiz;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class SignInActivity extends Activity {
@@ -19,13 +21,20 @@ public class SignInActivity extends Activity {
 	private WebView webView;
 	private WebViewClient webViewClient;
 	private String token = null;
-	private Context context;
+    ProgressBar progressBar;
+    private Context context;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.web_view);
+        ActionBar actionBar = (ActionBar) getActionBar();
+        actionBar.hide();
+
+        setContentView(R.layout.web_view);
+        progressBar = (ProgressBar) findViewById(R.id.splashProgressBar);
+
 		context = getBaseContext();
 		webView = (WebView) findViewById(R.id.webView1);
+        webView.setVisibility(View.GONE);
 		webView.getSettings().setJavaScriptEnabled(true);
 		
 		
@@ -56,6 +65,15 @@ public class SignInActivity extends Activity {
 				finish();
 			}
 		}
-	}
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            if(url.contains("xjuP1YM8JmrMVApI1eXzw")){
+                webView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+            }
+        }
+    }
 	
 }
