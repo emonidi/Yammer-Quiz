@@ -48,7 +48,7 @@ public class PeopleGetter extends AsyncTask<String, Void, ArrayList<Person>> {
         String result = null;
         JSONArray people = new JSONArray();
         StringBuilder sbuilder = new StringBuilder();
-        int index = 1;
+        int index = 0;
 
         while(index < 4){
             StringBuilder sb = null;

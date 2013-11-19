@@ -70,7 +70,7 @@ public class Splash extends Activity {
                     getPeople();
                 }else{
                 	Helper helper = new Helper();
-                    Intent  in = new Intent(getBaseContext(),helper.startNextQuestion(getBaseContext(),"splash"));
+                    Intent  in = new Intent(getBaseContext(),helper.startNextQuestion(getBaseContext(),"PositionQuestionActivity"));
                     startActivity(in);
                     finish();
                 }

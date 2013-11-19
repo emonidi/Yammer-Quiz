@@ -34,7 +34,7 @@ public class Helper {
     }
 
     public Class startNextQuestion(Context context,String cl){
-        String[] activities = {"WhoQuestion","WhoNamesQuestionActivity"};
+        String[] activities = {"WhoQuestion","WhoNamesQuestionActivity","PositionQuestionActivity"};
         Class<?> activity = null;
         
         if(cl.equals("splash")){
@@ -53,6 +53,9 @@ public class Helper {
                 }else if(cl.equals("WhoNamesQuestionActivity")){
                 	  activity = WhoQuestion.class;
                       return activity;
+                }else if(cl.equals("PositionQuestionActivity")){
+                      activity = PositionQuestionActivity.class;
+                      return  activity;
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.virtual_affairs.yammer_quiz;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.os.Handler;
 import android.view.View;
@@ -24,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,18 +46,29 @@ import java.util.zip.Inflater;
 public class WhoNamesQuestionActivity extends Activity {
     ImageView mainImage;
     ListView listView;
+    int screenSize;
     JSONArray selectedPeople;
     Helper helper;
+    LinearLayout content;
+    LinearLayout loader;
     int answer;
     ArrayList<Person> sPeople;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+
         sPeople= new ArrayList<Person>();
         setContentView(R.layout.who_names_question);
+        content = (LinearLayout) findViewById(R.id.contentLayout);
+        loader = (LinearLayout) findViewById(R.id.loaderLayout);
         selectedPeople = new JSONArray();
         Helper helper = new Helper();
         answer = helper.makeRandomNum(2);
+        Display display = getWindowManager().getDefaultDisplay();
+
+        screenSize = helper.getScreenSize(display).x;
+        content.setX(screenSize*2);
         String rawPeople = new InfoManager(this,"people").Read();
         try {
             JSONArray people = new JSONArray(rawPeople);
@@ -174,6 +188,14 @@ public class WhoNamesQuestionActivity extends Activity {
             Canvas c= new Canvas(circleBitmap);
             c.drawCircle(bitmap.getWidth()/2,bitmap.getHeight()/2,bitmap.getWidth()/2,paint);
             imageView.setImageBitmap(circleBitmap);
+
+            ObjectAnimator anim = ObjectAnimator.ofFloat(loader,"x",screenSize*-1);
+            anim.setDuration(500);
+            anim.start();
+
+            ObjectAnimator an = ObjectAnimator.ofFloat(content,"x",0);
+            an.setDuration(500);
+            an.start();
         }
     }
 }

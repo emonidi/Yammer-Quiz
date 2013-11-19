@@ -6,7 +6,8 @@ public class Person {
 	String last_name;
 	String full_name;
 	String imageUrl;
-	
+	String jobTitle;
+
 	public int getId() {
 		return id;
 	}
@@ -37,6 +38,13 @@ public class Person {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-	
-	
+
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
 }
