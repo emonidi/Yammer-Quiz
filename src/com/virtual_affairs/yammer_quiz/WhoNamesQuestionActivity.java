@@ -103,9 +103,9 @@ public class WhoNamesQuestionActivity extends Activity {
 
         public lAdapter(Context context, int resource, ArrayList<Person> sPeople) {
             super(context, resource, (List) sPeople);
-            context = context;
+            this.context = context;
             objects = sPeople;
-            resource = resource;
+            this.resource = resource;
         }
 
 
@@ -138,7 +138,7 @@ public class WhoNamesQuestionActivity extends Activity {
 
                             public void run() {
                             	Helper helper = new Helper();
-                                Intent i = new Intent(getBaseContext(),helper.startNextQuestion(getBaseContext(),"WhoNamesQuestionActivity"));
+                                Intent i = new Intent(getBaseContext(),PositionQuestionActivity.class);
                                 startActivity(i);
                                 finish();
                             }

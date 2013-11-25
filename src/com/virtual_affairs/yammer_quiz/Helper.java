@@ -48,10 +48,10 @@ public class Helper {
             }
             else{
                 if(cl.equals("WhoQuestion")){
-                    activity = WhoNamesQuestionActivity.class;
+                    activity = WhoQuestion.class;
                     return activity;
                 }else if(cl.equals("WhoNamesQuestionActivity")){
-                	  activity = WhoQuestion.class;
+                	  activity = WhoNamesQuestionActivity.class;
                       return activity;
                 }else if(cl.equals("PositionQuestionActivity")){
                       activity = PositionQuestionActivity.class;

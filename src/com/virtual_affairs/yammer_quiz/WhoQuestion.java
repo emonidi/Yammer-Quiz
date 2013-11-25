@@ -6,6 +6,7 @@ import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -43,6 +44,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -66,6 +68,7 @@ public class WhoQuestion extends Activity {
     JSONArray selectedPeople = null;
     Point screenSize;
     Display screen;
+    LinearLayout answer_container;
     int answer;
 
     LinearLayout mainLayout;
@@ -77,11 +80,10 @@ public class WhoQuestion extends Activity {
         setContentView(R.layout.activity_who_question);
 
         answer = helper.makeRandomNum(3);
-
+        answer_container = (LinearLayout) findViewById(R.id.answer_container);
         getPeopleData();
         getPeopleWithImages(3);
         questionText = (TextView) findViewById(R.id.questionText);
-        listView = (ListView) findViewById(R.id.answerList);
         ArrayList<Person> persons = new ArrayList<Person>();
         for(int i = 0; i < selectedPeople.length(); i++){
             Person person = new Person();
@@ -95,12 +97,13 @@ public class WhoQuestion extends Activity {
             }
         }
 
-        PeopleAdapter adapter = new PeopleAdapter(this,R.layout.people_list_item,persons);
-        listView.setAdapter(adapter);
 
 
         try {
             questionText.setText("Who is "+selectedPeople.getJSONObject(answer).getString("full_name")+"?");
+            for(int i  = 0 ; i < selectedPeople.length(); i++){
+            	setImage(i);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -108,79 +111,13 @@ public class WhoQuestion extends Activity {
 
 
 
-    public class PeopleAdapter extends ArrayAdapter<Person> {
-       Context context;
-       ArrayList<Person> objects;
-       int resource;
-       public PeopleAdapter(Context context, int resource, ArrayList<Person> objects) {
-           super(context, resource, objects);
-
-           resource= resource;
-           context = context;
-           objects = objects;
-
-       }
-
-
-       @Override
-       public View getView(int position, View convertView, ViewGroup parent) {
-
-           if(convertView == null){
-               LayoutInflater inflater  = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-               final View v = inflater.inflate(R.layout.people_list_item,parent,false);
-               ImageView imageView = (ImageView) parent.findViewById(R.id.imageView);
-               final int pos = position;
-               setImage(pos);
-
-               v.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View view) {
-                       if(pos == answer){
-                           appendIcon(view,"correct");
-                       }else{
-                           appendIcon(view,"incorrect");
-                       }
-                   }
-               });
-               return v;
-           }else{
-               return convertView;
-           }
-
-       };
-
-       private void appendIcon(View v, String iconType){
-            ImageView icon  = (ImageView) v.findViewById(R.id.imageView);
-            Drawable drawable;
-            if(iconType.equals("correct")){
-                  drawable = getResources().getDrawable(R.drawable.correct);
-            }else{
-                  drawable = getResources().getDrawable(R.drawable.incorrect);
-            }
-            icon.setImageDrawable(drawable);
-            final Intent i  = new Intent(getContext(),helper.startNextQuestion(getBaseContext(),"WhoQuestion"));
-            Handler handler  = new Handler();
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(i);
-                    finish();
-                }
-            };
-            handler.postDelayed(runnable,1000);
-       }
-
-       @Override
-       public int getCount() {
-           return 3;
-       }
-   }
+    
 
     public void setImage(int position){
         JSONObject p = null;
         try {
             p =  selectedPeople.getJSONObject(position);
-            String imageString = p.getString("mugshot_url_template").replace("{width}","100").replace("{height}","100");
+            String imageString = p.getString("mugshot_url_template").replace("{width}","300").replace("{height}","300");
             new ImageGetter().execute(new String[] {imageString,String.valueOf(position)});
 
         } catch (JSONException e) {
@@ -241,9 +178,52 @@ public class WhoQuestion extends Activity {
             Canvas c = new Canvas(circleBitmap);
             c.drawCircle(bitmap.getWidth()/2,bitmap.getHeight()/2,bitmap.getWidth()/2,paint);
 
-            View view = (View) listView.getChildAt(Integer.parseInt(index));
-            ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-            imageView.setImageBitmap(circleBitmap);
+            final ImageView im = (ImageView) new ImageView(getBaseContext());
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            	im.setPadding(0, 25, 0, 0);
+            }else{
+            	im.setPadding(25,50, 0, 0);
+            }
+            
+            im.setImageBitmap(circleBitmap);
+            im.setTag(index);
+            im.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					if(Integer.parseInt(index) == answer){
+						im.setImageDrawable(getResources().getDrawable(R.drawable.correct));
+					}else{
+						im.setImageDrawable(getResources().getDrawable(R.drawable.incorrect));
+					}
+					im.setMinimumWidth(300);
+					im.setMinimumHeight(300);
+					
+					Handler handler = new Handler();
+					
+					Runnable runnable =  new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							Intent i =  new Intent(getBaseContext(),helper.startNextQuestion(getBaseContext(), "WhoNamesQuestionActivity"));
+							startActivity(i);
+							finish();
+						}
+					};					
+					
+					handler.postDelayed(runnable, 1000);
+					
+					//TO DO: score implementation here
+					
+					
+				}
+			});
+                        
+            answer_container.addView(im);
+            
+            
+            
         }
 
 

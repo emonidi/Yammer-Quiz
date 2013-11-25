@@ -5,33 +5,32 @@
     android:padding="20dp">
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:gravity="right"
+        android:orientation="horizontal" >
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/imageView"
-
+			android:layout_gravity="left"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:src="@android:drawable/star_off"
-            android:layout_gravity="center" />
+          />
 
         <TextView
-            android:layout_width="wrap_content"
-			
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
             android:id="@+id/answerText"
-            
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignBottom="@+id/imageView"
             android:layout_centerHorizontal="true"
-            android:gravity="center_vertical"
             android:layout_marginLeft="20dip"
+            android:gravity="center_vertical|left"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#fff" />
 
     </LinearLayout>

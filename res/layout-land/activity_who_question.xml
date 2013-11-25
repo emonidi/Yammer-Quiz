@@ -32,8 +32,9 @@
 
     <LinearLayout 
         android:id="@+id/answer_container"
-        android:orientation="vertical"
-        
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 

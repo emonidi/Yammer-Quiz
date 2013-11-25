@@ -33,14 +33,18 @@ public final class R {
         public static final int yammer_sigin_in=0x7f020009;
     }
     public static final class id {
-        public static final int action_settings=0x7f080010;
-        public static final int answerList=0x7f080009;
+        public static final int HorizontalWrapper=0x7f080013;
+        public static final int action_settings=0x7f080014;
         public static final int answerText=0x7f08000d;
+        public static final int answer_container=0x7f080009;
+        public static final int contentLayout=0x7f08000e;
         public static final int imageView=0x7f08000b;
         public static final int listItemMainLayout=0x7f08000a;
-        public static final int mainImageView=0x7f08000e;
+        public static final int loaderLayout=0x7f080011;
+        public static final int mainImageView=0x7f08000f;
         public static final int mainLayout=0x7f080007;
-        public static final int mainListView=0x7f08000f;
+        public static final int mainListView=0x7f080010;
+        public static final int progressBar=0x7f080012;
         public static final int questionText=0x7f080008;
         public static final int signInButton=0x7f080003;
         public static final int signInButtonLayout=0x7f080002;

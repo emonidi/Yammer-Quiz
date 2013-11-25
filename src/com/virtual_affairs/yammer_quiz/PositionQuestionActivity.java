@@ -1,6 +1,9 @@
 package com.virtual_affairs.yammer_quiz;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -10,8 +13,20 @@ import android.graphics.Point;
 import android.graphics.Shader;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +36,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -34,20 +50,108 @@ public class PositionQuestionActivity extends Activity {
     Random random = new Random();
     int answer  = random.nextInt(3);
     Bitmap imageBitmap;
+    TextView questionTextView;
+    LinearLayout loaderLayout;
+    LinearLayout contentLayout;
+    ListView answerList;
     Display display ;
     int screenWidth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.who_names_question);
+    
         helper = new Helper();
         display = getWindowManager().getDefaultDisplay();
         screenWidth = helper.getScreenSize(display).x;
+        setInitialLayout();
+        
         selectedPeople = getSelectedPeople();
+        questionTextView = (TextView) findViewById(R.id.questionText);
+        questionTextView.setText("What is the position of "+selectedPeople.get(answer).full_name+"?");
         GetImage imageGetter = new GetImage();
         imageGetter.execute(selectedPeople.get(answer).getImageUrl());
+        makeAnwserList();
 
+    }
+    
+    private void makeAnwserList(){
+    	answerList = (ListView) findViewById(R.id.mainListView);
+    	LAdapter adapter = new LAdapter(getBaseContext(), R.id.mainListView, selectedPeople);
+    	answerList.setAdapter(adapter);
+    
+    }
+    
+    private class LAdapter extends ArrayAdapter<ArrayList>{
+    	Context context;
+    	int resource;
+    	ArrayList<Person> people;
+		public LAdapter(Context context, int resource, ArrayList<Person> people) {
+			super(context, resource, (List) people);
+			this.context = context;
+			this.resource = resource;
+			this.people = people ;
+			// TODO Auto-generated constructor stub
+		}
 
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return 3;
+		}
+
+		@Override
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			// TODO Auto-generated method stub
+			
+			if(convertView == null){
+				View v = null;
+				LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+				v = inflater.inflate(R.layout.who_name_listview, parent,false);
+				TextView textView = (TextView) v.findViewById(R.id.answerText);
+				textView.setText(people.get(position).jobTitle);
+				final ImageView star = (ImageView) v.findViewById(R.id.imageView);
+				v.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						if(position == answer){
+							star.setImageDrawable(getResources().getDrawable(R.drawable.correct));
+						}else{
+							star.setImageDrawable(getResources().getDrawable(R.drawable.incorrect));
+						}						
+						
+						Handler handler = new Handler();
+						Runnable runnable = new Runnable() {
+							
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								Intent i = new Intent(getBaseContext(),helper.startNextQuestion(getBaseContext(), "WhoQuestion"));
+								startActivity(i);
+								finish();
+							}
+						};
+						
+						handler.postDelayed(runnable, 1000);
+					}
+				});
+				return v;
+			}else{
+				return convertView;
+			}
+			
+			
+		}
+		
+	
+    	
+    } 
+    
+    private void setInitialLayout(){
+    	loaderLayout = (LinearLayout) findViewById(R.id.loaderLayout);
+    	contentLayout = (LinearLayout) findViewById(R.id.contentLayout);
+    	contentLayout.setX(screenWidth*2);
     }
 
     private class GetImage extends AsyncTask<String,Void,Bitmap>{
@@ -66,6 +170,14 @@ public class PositionQuestionActivity extends Activity {
             Canvas c= new Canvas(circleBitmap);
             c.drawCircle(bitmap.getWidth()/2,bitmap.getHeight()/2,bitmap.getWidth()/2,paint);
             imageView.setImageBitmap(circleBitmap);
+            
+            ObjectAnimator pAnim = ObjectAnimator.ofFloat(loaderLayout, "x", screenWidth*-1);
+            pAnim.setDuration(500);
+            pAnim.start();
+            
+            ObjectAnimator cAnim = ObjectAnimator.ofFloat(contentLayout, "x", 0);
+            cAnim.setDuration(500);
+            cAnim.start();
         }
 
         @Override
@@ -104,12 +216,12 @@ public class PositionQuestionActivity extends Activity {
 
     private ArrayList<Person> SelectedPeople(JSONArray people){
         Person p = null;
-        ArrayList selectedPeople = new ArrayList<Person>();
+        ArrayList<Person> selectedPeople = new ArrayList<Person>();
         for(int i = 0 ;  i < 3; i++){
             JSONObject person=  null;
             String jobTitle = "";
             String image = "no_photo";
-            while (image.contains("no_photo") && jobTitle.length() < 3 ){
+            while (image.contains("no_photo") && jobTitle.isEmpty() ){
                 int r  = random.nextInt(people.length());
                 try {
                     person = people.getJSONObject(r);
@@ -122,9 +234,9 @@ public class PositionQuestionActivity extends Activity {
 
             p = new Person();
             try {
-                p.setImageUrl(person.getString("mugshot_url_template").replace("{width}", "300").replace("{height}", "300"));
-                p.setFull_name(person.getString("full_name"));
-                p.setJobTitle(person.getString("job_title"));
+                p.imageUrl = person.getString("mugshot_url_template").replace("{width}", "300").replace("{height}", "300");
+                p.full_name = person.getString("full_name");
+                p.jobTitle = person.getString("job_title");
                 selectedPeople.add(p);
             } catch (JSONException e) {
                 e.printStackTrace();
