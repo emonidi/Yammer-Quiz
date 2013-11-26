@@ -66,7 +66,7 @@ public class Splash extends Activity {
 			if(updated == null){
                 getPeople();
             }else {
-                if(Long.parseLong(updated) < new Date().getTime()+86400000){
+                if(Long.parseLong(updated) > new Date().getTime()+86400000){
                     getPeople();
                 }else{
                 	Helper helper = new Helper();
